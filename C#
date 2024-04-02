@@ -1,0 +1,100 @@
+using System;
+using System;
+using System.Collections.Generic;
+
+namespace FinancialQuizApp
+{
+    // Class to represent each quiz question
+    public class QuizQuestion
+    {
+        public string Question { get; set; }
+        public List<string> Options { get; set; }
+        public string CorrectAnswer { get; set; }
+
+        public QuizQuestion(string question, List<string> options, string correctAnswer)
+        {
+            Question = question;
+            Options = options;
+            CorrectAnswer = correctAnswer;
+        }
+    }
+
+    // Class to manage the quiz logic
+    public class FinancialQuiz
+    {
+        public List<QuizQuestion> QuizQuestions { get; }
+        public int CurrentQuestionIndex { get; private set; }
+        public int Score { get; private set; }
+
+        public FinancialQuiz()
+        {
+            QuizQuestions = new List<QuizQuestion>();
+            CurrentQuestionIndex = 0;
+            Score = 0;
+            LoadQuizQuestions();
+        }
+
+        private void LoadQuizQuestions()
+        {
+            QuizQuestions.Add(new QuizQuestion("What is the first step in creating a budget?", new List<string> {"Calculate income", "List expenses", "Set financial goals"}, "Set financial goals"));
+            QuizQuestions.Add(new QuizQuestion("What is the purpose of an emergency fund?", new List<string> {"To fund luxurious vacations", "To cover unexpected expenses", "To invest in the stock market"}, "To cover unexpected expenses"));
+            QuizQuestions.Add(new QuizQuestion("When should you start saving for retirement?", new List<string> {"At age 50", "After buying a house", "As soon as possible"}, "As soon as possible"));
+            // Add more quiz questions here
+        }
+
+        public string GetNextQuestion()
+        {
+            if (CurrentQuestionIndex < QuizQuestions.Count)
+            {
+                return QuizQuestions[CurrentQuestionIndex].Question;
+            }
+            return "Quiz Complete. Your Score: " + Score;
+        }
+
+        public bool CheckAnswer(string userAnswer)
+        {
+            if (CurrentQuestionIndex < QuizQuestions.Count && userAnswer == QuizQuestions[CurrentQuestionIndex].CorrectAnswer)
+            {
+                Score++;
+                CurrentQuestionIndex++;
+                return true;
+            }
+            else
+            {
+                CurrentQuestionIndex++;
+                return false;
+            }
+        }
+    }
+
+    // Main application entry point
+    public class Program
+    {
+        public static void Main()
+        {
+            FinancialQuiz quiz = new FinancialQuiz();
+            Console.WriteLine("Welcome to the Financial Literacy Quiz!\n");
+
+            while (quiz.GetNextQuestion() != "Quiz Complete. Your Score: " + quiz.Score)
+            {
+                string currentQuestion = quiz.GetNextQuestion();
+                Console.WriteLine(currentQuestion);
+
+                // Simulating user input for answer
+                string userAnswer = Console.ReadLine();
+
+                bool isCorrect = quiz.CheckAnswer(userAnswer);
+                if (isCorrect)
+                {
+                    Console.WriteLine("Correct!");
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect. The correct answer was: " + quiz.QuizQuestions[quiz.CurrentQuestionIndex-1].CorrectAnswer);
+                }
+
+                Console.WriteLine();
+            }
+        }
+    }
+}
