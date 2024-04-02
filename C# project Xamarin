@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
+
+namespace FinancialQuizApp
+{
+    public partial class MainPage : ContentPage
+    {
+        FinancialQuiz quiz; // The instance of the FinancialQuiz class
+
+        Label questionLabel;
+        Button optionButton1, optionButton2, optionButton3;
+
+        public MainPage()
+        {
+            quiz = new FinancialQuiz();
+            InitializeComponents();
+            LoadQuestion();
+        }
+
+        void InitializeComponents()
+        {
+            questionLabel = new Label
+            {
+                Text = quiz.GetNextQuestion(),
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.CenterAndExpand
+            };
+
+            optionButton1 = new Button
+            {
+                Text = quiz.QuizQuestions[quiz.CurrentQuestionIndex].Options[0],
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            };
+            optionButton1.Clicked += OptionButton_Clicked;
+
+            optionButton2 = new Button
+            {
+                Text = quiz.QuizQuestions[quiz.CurrentQuestionIndex].Options[1],
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            };
+            optionButton2.Clicked += OptionButton_Clicked;
+
+            optionButton3 = new Button
+            {
+                Text = quiz.QuizQuestions[quiz.CurrentQuestionIndex].Options[2],
+                HorizontalOptions = LayoutOptions.CenterAndExpand
+            };
+            optionButton3.Clicked += OptionButton_Clicked;
+
+            Content = new StackLayout
+            {
+                Children = { questionLabel, optionButton1, optionButton2, optionButton3 }
+            };
+        }
+
+        void LoadQuestion()
+        {
+            questionLabel.Text = quiz.GetNextQuestion();
+            optionButton1.Text = quiz.QuizQuestions[quiz.CurrentQuestionIndex].Options[0];
+            optionButton2.Text = quiz.QuizQuestions[quiz.CurrentQuestionIndex].Options[1];
+            optionButton3.Text = quiz.QuizQuestions[quiz.CurrentQuestionIndex].Options[2];
+        }
+
+        void OptionButton_Clicked(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            string userAnswer = button.Text;
+
+            bool isCorrect = quiz.CheckAnswer(userAnswer);
+
+            if (quiz.CurrentQuestionIndex < quiz.QuizQuestions.Count)
+            {
+                LoadQuestion();
+            }
+            else
+            {
+                DisplayAlert("Quiz Complete", "Your Score: " + quiz.Score, "OK");
+            }
+        }
+    }
+}
