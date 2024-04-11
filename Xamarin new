@@ -1,0 +1,122 @@
+// QuizQuestion.cs
+using System.Collections.Generic;
+
+namespace FinancialQuizApp.Models
+{
+    public class QuizQuestion
+    {
+        public string Question { get; set; }
+        public List<string> Options { get; set; }
+        public int CorrectOptionIndex { get; set; }
+    }
+}
+
+// QuizManager.cs
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+
+namespace FinancialQuizApp.Services
+{
+    public class QuizManager
+    {
+        public List<QuizQuestion> LoadQuizzes(string filePath)
+        {
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                string json = reader.ReadToEnd();
+                return JsonConvert.DeserializeObject<List<QuizQuestion>>(json);
+            }
+        }
+    }
+}
+
+// MainPage.xaml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinancialQuizApp.MainPage">
+    <StackLayout>
+        <Label x:Name="questionLabel" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Picker x:Name="optionsPicker" Title="Select an Option" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Button x:Name="submitButton" Text="Submit" Clicked="SubmitButton_Clicked" HorizontalOptions="CenterAndExpand"/>
+    </StackLayout>
+</ContentPage>
+
+// MainPage.xaml.cs
+using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
+using FinancialQuizApp.Models;
+using FinancialQuizApp.Services;
+
+namespace FinancialQuizApp
+{
+    public partial class MainPage : ContentPage
+    {
+        private QuizManager quizManager;
+        private List<QuizQuestion> quizzes;
+        private int currentQuestionIndex = 0;
+        private int score = 0;
+
+        public MainPage()
+        {
+            InitializeComponent();
+            quizManager = new QuizManager();
+            LoadQuizzes();
+        }
+
+        private void LoadQuizzes()
+        {
+            quizzes = quizManager.LoadQuizzes("quizzes.json");
+            if (quizzes == null || quizzes.Count == 0)
+            {
+                DisplayAlert("Error", "Failed to load quizzes. Please check your internet connection.", "OK");
+                return;
+            }
+            DisplayQuestion();
+        }
+
+        private void DisplayQuestion()
+        {
+            if (currentQuestionIndex < quizzes.Count)
+            {
+                var currentQuiz = quizzes[currentQuestionIndex];
+                questionLabel.Text = currentQuiz.Question;
+                optionsPicker.ItemsSource = currentQuiz.Options;
+                optionsPicker.SelectedIndex = -1;
+                optionsPicker.IsEnabled = true;
+                submitButton.IsEnabled = true;
+            }
+            else
+            {
+                DisplayResult();
+            }
+        }
+
+        private void SubmitButton_Clicked(object sender, EventArgs e)
+        {
+            if (optionsPicker.SelectedIndex == -1)
+            {
+                DisplayAlert("Error", "Please select an option.", "OK");
+                return;
+            }
+
+            var currentQuiz = quizzes[currentQuestionIndex];
+            if (currentQuiz.CorrectOptionIndex == optionsPicker.SelectedIndex)
+            {
+                score++;
+            }
+
+            currentQuestionIndex++;
+            DisplayQuestion();
+        }
+
+        private void DisplayResult()
+        {
+            DisplayAlert("Quiz Completed", $"Your score is {score}/10.", "OK");
+            score = 0; // Reset score for future attempts
+            currentQuestionIndex = 0; // Reset question index
+        }
+    }
+}
