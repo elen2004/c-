@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using System.Linq;
+
+namespace FinancialQuizApp
+{
+    public class QuizQuestion
+    {
+        public string Question { get; set; }
+        public List<string> Options { get; set; }
+        public int CorrectOptionIndex { get; set; }
+    }
+
+    public class QuizManager
+    {
+        public List<QuizQuestion> LoadQuizzes(string filePath)
+        {
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                string json = reader.ReadToEnd();
+                return JsonConvert.DeserializeObject<List<QuizQuestion>>(json);
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            QuizManager quizManager = new QuizManager();
+            List<QuizQuestion> quizzes = quizManager.LoadQuizzes("quizzes.json");
+            if (quizzes == null || quizzes.Count == 0)
+            {
+                Console.WriteLine("Failed to load quizzes. Please check your internet connection.");
+                return;
+            }
+
+            int score = 0;
+            Console.WriteLine("Welcome to the Financial Literacy Quiz!");
+            Console.WriteLine("You are about to start a quiz with 10 questions. Each question is worth 1 point. Let's begin!\n");
+
+            for (int i = 0; i < quizzes.Count; i++)
+            {
+                var currentQuiz = quizzes[i];
+                Console.WriteLine($"Question {i + 1}: {currentQuiz.Question}");
+
+                for (int j = 0; j < currentQuiz.Options.Count; j++)
+                {
+                    Console.WriteLine($"{j + 1}. {currentQuiz.Options[j]}");
+                }
+
+                Console.Write("Your answer: ");
+                int userAnswer = int.Parse(Console.ReadLine());
+
+                if (userAnswer == currentQuiz.CorrectOptionIndex + 1)
+                {
+                    score++;
+                }
+            }
+
+            Console.WriteLine($"\nQuiz Completed! Your score is: {score}/10");
+        }
+    }
+}
