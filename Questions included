@@ -114,6 +114,6 @@ class Program
             questionNumber++;
         }
 
-        Console.WriteLine($"\nQuiz Completed! Your score is: {score}/{quizzes.Count}");
+        Console.WriteLine($"\nQuiz Completed! Here are the correct answer for those questions: Question 1: A type of retirement savings plan offered by employers. Question 2: Annual Percentage Rate. Question 3: All of the above (To limit spending, To track income, To plan expenses). Question 4: A debit card withdraws money directly from a checking account, while a credit card allows borrowing up to a certain limit. Question 5: To cover unexpected expenses. Question 6: Interest paid on interest. Question 7:  Stocks represent ownership in a company, while bonds represent debt owed by a company. Question 8: To reduce risk by spreading investments across different assets. Question 9: Inflation. Question 10 Return on Investment and Your score is: {score}/{quizzes.Count}");
     }
 }
