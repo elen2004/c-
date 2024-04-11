@@ -1,0 +1,53 @@
+// quizzes.json
+[
+    {
+        "Question": "What is the first step in creating a budget?",
+        "Options": ["Identify income", "Set financial goals", "Track expenses", "Create budget categories"],
+        "CorrectOptionIndex": 1
+    },
+    {
+        "Question": "What is compound interest?",
+        "Options": ["Interest paid on a loan", "Interest earned on savings, including interest already earned", "Interest paid on savings", "Interest earned on investments"],
+        "CorrectOptionIndex": 3
+    },
+    {
+        "Question": "What is the purpose of a credit score?",
+        "Options": ["To track your income", "To determine your borrowing ability", "To calculate your taxes", "To monitor your spending"],
+        "CorrectOptionIndex": 1
+    },
+    {
+        "Question": "What is an emergency fund?",
+        "Options": ["A fund used for regular expenses", "A fund used for travel expenses", "A fund used for unexpected expenses", "A fund used for retirement"],
+        "CorrectOptionIndex": 2
+    },
+    {
+        "Question": "What is the definition of inflation?",
+        "Options": ["A decrease in the general price level of goods and services", "An increase in the general price level of goods and services", "Stagnation in the general price level of goods and services", "No change in the general price level of goods and services"],
+        "CorrectOptionIndex": 1
+    },
+    {
+        "Question": "What is the difference between a debit card and a credit card?",
+        "Options": ["A debit card withdraws money directly from your bank account, while a credit card allows you to borrow money up to a certain limit", "A debit card allows you to borrow money up to a certain limit, while a credit card withdraws money directly from your bank account", "There is no difference", "They both allow you to borrow money up to a certain limit"],
+        "CorrectOptionIndex": 0
+    },
+    {
+        "Question": "What is a budget deficit?",
+        "Options": ["When expenses exceed income", "When income exceeds expenses", "When income equals expenses", "When income doubles expenses"],
+        "CorrectOptionIndex": 0
+    },
+    {
+        "Question": "What is a stock?",
+        "Options": ["A loan to a company", "A share of ownership in a company", "A type of bond", "A type of mutual fund"],
+        "CorrectOptionIndex": 1
+    },
+    {
+        "Question": "What does ROI stand for in finance?",
+        "Options": ["Return on Investment", "Risk of Inflation", "Rate of Interest", "Return on Income"],
+        "CorrectOptionIndex": 0
+    },
+    {
+        "Question": "What is a 401(k) retirement plan?",
+        "Options": ["A type of health insurance plan", "A type of savings account", "A type of retirement savings plan offered by employers", "A type of loan for purchasing a home"],
+        "CorrectOptionIndex": 2
+    }
+]
