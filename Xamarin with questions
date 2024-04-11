@@ -1,0 +1,122 @@
+using Xamarin.Forms;
+using System;
+using System.Collections.Generic;
+
+namespace FinancialQuizApp
+{
+    public partial class MainPage : ContentPage
+    {
+        private List<QuizQuestion> quizzes;
+        private int score;
+        private int questionNumber;
+
+        public MainPage()
+        {
+            InitializeComponent();
+
+            quizzes = new List<QuizQuestion>
+            {
+                new QuizQuestion
+                {
+                    Question = "What is a 401(k)?",
+                    Options = new List<string> {"A type of health insurance plan", "A type of savings account", "A type of retirement savings plan offered by employers", "A type of loan for purchasing a home"},
+                    CorrectOptionIndex = 2
+                },
+                new QuizQuestion
+                {
+                    Question = "What does APR stand for?",
+                    Options = new List<string> {"Annual Percentage Rate", "Average Payment Receipt", "Adjusted Principal Ratio", "Accumulated Payment Rate"},
+                    CorrectOptionIndex = 0
+                },
+                new QuizQuestion
+                {
+                    Question = "What is the purpose of a budget?",
+                    Options = new List<string> {"To limit spending", "To track income", "To plan expenses", "All of the above"},
+                    CorrectOptionIndex = 3
+                },
+                new QuizQuestion
+                {
+                    Question = "What is the difference between a debit card and a credit card?",
+                    Options = new List<string> {"A debit card withdraws money directly from a checking account, while a credit card allows borrowing up to a certain limit", "A debit card is used for online transactions, while a credit card is used for in-person purchases", "There is no difference", "A debit card has higher fees than a credit card"},
+                    CorrectOptionIndex = 0
+                },
+                new QuizQuestion
+                {
+                    Question = "What is the purpose of an emergency fund?",
+                    Options = new List<string> {"To save for a vacation", "To cover unexpected expenses", "To invest in stocks", "To pay off debt"},
+                    CorrectOptionIndex = 1
+                },
+                new QuizQuestion
+                {
+                    Question = "What is compound interest?",
+                    Options = new List<string> {"Interest paid on a loan", "Interest paid on interest", "Interest calculated yearly", "Interest paid upfront"},
+                    CorrectOptionIndex = 1
+                },
+                new QuizQuestion
+                {
+                    Question = "What is the difference between stocks and bonds?",
+                    Options = new List<string> {"Stocks represent ownership in a company, while bonds represent debt owed by a company", "Stocks are more risky than bonds", "Bonds provide higher returns than stocks", "There is no difference"},
+                    CorrectOptionIndex = 0
+                },
+                new QuizQuestion
+                {
+                    Question = "What is the purpose of diversification in investment?",
+                    Options = new List<string> {"To reduce risk by spreading investments across different assets", "To concentrate investments in a single asset for higher returns", "To invest only in high-risk assets", "To avoid investing in stocks"},
+                    CorrectOptionIndex = 0
+                },
+                new QuizQuestion
+                {
+                    Question = "What is the term for when the overall level of prices for goods and services rises, resulting in a decrease in purchasing power?",
+                    Options = new List<string> {"Inflation", "Deflation", "Recession", "Stagnation"},
+                    CorrectOptionIndex = 0
+                },
+                new QuizQuestion
+                {
+                    Question = "What does ROI stand for?",
+Options = new List<string> {"Return on Investment", "Rate of Interest", "Risk of Inflation", "Revenue from Operations"},
+                    CorrectOptionIndex = 0
+                }
+            };
+
+            score = 0;
+            questionNumber = 0;
+
+            DisplayQuestion();
+        }
+
+        private void DisplayQuestion()
+        {
+            if (questionNumber >= quizzes.Count)
+            {
+                DisplayScore();
+                return;
+            }
+
+            var currentQuiz = quizzes[questionNumber];
+            questionLabel.Text = $"Question {questionNumber + 1}: {currentQuiz.Question}";
+
+            optionsPicker.ItemsSource = currentQuiz.Options;
+            optionsPicker.SelectedIndex = -1;
+        }
+
+        private void optionsPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var picker = (Picker)sender;
+            var selectedIndex = picker.SelectedIndex;
+            var currentQuiz = quizzes[questionNumber];
+
+            if (selectedIndex == currentQuiz.CorrectOptionIndex)
+            {
+                score++;
+            }
+
+            questionNumber++;
+            DisplayQuestion();
+        }
+
+        private void DisplayScore()
+        {
+            resultLabel.Text = $"Quiz Completed! Your score is: {score}/{quizzes.Count}";
+        }
+    }
+}
